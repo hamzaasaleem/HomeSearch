@@ -1,8 +1,9 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import viewsets, permissions, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import *
-
+User=get_user_model()
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -58,10 +59,89 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def perform_create(self, serializer):
-        import pdb;pdb.set_trace()
         instance = serializer.save()
         if instance.role == 'agent':
             Agent.objects.get_or_create(user=instance)
         elif instance.role == 'customer':
             Customer.objects.get_or_create(user=instance)
         instance.save()
+
+
+
+class ResetPasswordview(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = ResetPasswordSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def partial_update(self, request, pk=None):
+        # import pdb
+        # pdb.set_trace()
+        user = User.objects.get(id=request.user.id)
+        if request.data['newPassword'] == request.data['confirmPassword']:
+            if request.data['currPassword'] != request.data['newPassword']:
+
+                if user.check_password(request.data['currPassword']):
+                    user.set_password(request.data['newPassword'])
+                    user.save()
+                    return Response(
+                        {"msg": "Password Updated Successfully"},
+                        status=status.HTTP_200_OK
+                    )
+                return Response(
+                    {"msg": "Password does not matched"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            else:
+                return Response(
+                    {"msg": "You cannot use your current password again "},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        else:
+            return Response(
+                {"msg": "Password and Confirm Password Does not match"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class UserRegistration(viewsets.ModelViewSet):
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def create(self, request):
+
+        user_data = {
+            'email': request.data['email'],
+            'gender': request.data['gender'],
+            # 'password': request.data['password'],
+            'password': make_password(request.data['password']),
+            'username': request.data['username'],
+            'role': request.data['role'],
+        }
+
+        serializer = UserSerializer(data=user_data)
+        if serializer.is_valid():
+            serializer.save()
+            user = User.objects.get(username=user_data['username'])
+            profile_data = {
+                'user': str(user.id),
+                'first_name': request.data['first_name'],
+                'last_name': request.data['last_name'],
+                'bio': request.data['bio'],
+                'phone': request.data['phone'],
+                'address': request.data['address'],
+                # 'user_image': request.data['user_image'],
+            }
+            profileSerializer = None
+            if user.role == 'agent':
+                profileSerializer = AgentProfileSerializer(data=profile_data)
+            elif user.role == 'customer':
+                profileSerializer = CustomerProfileSerializer(data=profile_data)
+
+            if profileSerializer.is_valid():
+                profileSerializer.save()
+                return Response(
+                    {"msg": "User Created!"},
+                    status=status.HTTP_201_CREATED)
+            return Response(profileSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

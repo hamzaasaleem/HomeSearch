@@ -4,6 +4,8 @@ from .views import *
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
+router.register(r'create-users', UserRegistration)
+router.register(r'reset-password', ResetPasswordview)
 
 
 urlpatterns = [
