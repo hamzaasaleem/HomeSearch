@@ -112,7 +112,6 @@ class UserRegistration(viewsets.ModelViewSet):
 
         user_data = {
             'email': request.data['email'],
-            'gender': request.data['gender'],
             # 'password': request.data['password'],
             'password': make_password(request.data['password']),
             'username': request.data['username'],
@@ -125,12 +124,8 @@ class UserRegistration(viewsets.ModelViewSet):
             user = User.objects.get(username=user_data['username'])
             profile_data = {
                 'user': str(user.id),
-                'first_name': request.data['first_name'],
-                'last_name': request.data['last_name'],
-                'bio': request.data['bio'],
+                'name': request.data['name'],
                 'phone': request.data['phone'],
-                'address': request.data['address'],
-                # 'user_image': request.data['user_image'],
             }
             profileSerializer = None
             if user.role == 'agent':

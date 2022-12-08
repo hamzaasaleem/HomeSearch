@@ -8,19 +8,19 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'role', 'gender']
+        fields = ['id', 'username', 'email', 'role']
 
 
 class AgentProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agent
-        fields = ['first_name', 'last_name', 'bio', 'phone', 'address', 'city']
+        fields = '__all__'
 
 
 class CustomerProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['first_name', 'last_name', 'bio', 'phone', 'address', 'city']
+        fields = '__all__'
 
 
 class ResetPasswordSerializer(serializers.ModelSerializer):
