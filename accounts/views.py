@@ -125,7 +125,7 @@ class UserRegistration(viewsets.ModelViewSet):
             profile_data = {
                 'user': str(user.id),
                 'name': request.data['name'],
-                'phone': request.data['phone'],
+                'phone': request.data['phone']
             }
             profileSerializer = None
             if user.role == 'agent':
