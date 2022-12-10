@@ -350,7 +350,7 @@ class listAllPropertiesViewset(viewsets.ModelViewSet):
 
 
 @api_view(['POST'])
-def SearchProperties(self, request):
+def SearchRentProperties(self, request):
     if request.method == 'POST':
 
         return Response({"message": "Got some data!", "data": request.data})
