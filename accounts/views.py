@@ -109,7 +109,7 @@ class UserRegistration(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
 
     def create(self, request):
-
+        import pdb;pdb.set_trace()
         user_data = {
             'email': request.data['email'],
             # 'password': request.data['password'],
@@ -122,10 +122,13 @@ class UserRegistration(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save()
             user = User.objects.get(username=user_data['username'])
+            user.password=make_password(request.data['password'])
+            user.save()
             profile_data = {
                 'user': str(user.id),
                 'name': request.data['name'],
-                'phone': request.data['phone']
+                'phone': request.data['phone'],
+                'city': request.data['city'],
             }
             profileSerializer = None
             if user.role == 'agent':
@@ -140,3 +143,6 @@ class UserRegistration(viewsets.ModelViewSet):
                     status=status.HTTP_201_CREATED)
             return Response(profileSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
