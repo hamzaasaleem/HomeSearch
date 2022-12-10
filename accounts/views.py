@@ -109,7 +109,7 @@ class UserRegistration(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
 
     def create(self, request):
-        import pdb;pdb.set_trace()
+
         user_data = {
             'email': request.data['email'],
             # 'password': request.data['password'],
@@ -143,6 +143,5 @@ class UserRegistration(viewsets.ModelViewSet):
                     status=status.HTTP_201_CREATED)
             return Response(profileSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 

@@ -1,4 +1,5 @@
 from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import *
@@ -346,3 +347,11 @@ class listAllPropertiesViewset(viewsets.ModelViewSet):
 
         if not sale and not rented:
             return Response({"msg": "Nothing is Listed"}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def SearchProperties(self, request):
+    if request.method == 'POST':
+
+        return Response({"message": "Got some data!", "data": request.data})
+    return Response({"message": "Hello, world!"})
