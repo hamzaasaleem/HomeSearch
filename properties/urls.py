@@ -18,5 +18,6 @@ router.register(r'get-all-properties', listAllPropertiesViewset)
 # router.register(r'sale', SaleViewset)
 
 urlpatterns = [
-    path('properties/', include(router.urls))
+    path('properties/', include(router.urls)),
+    path('properties/agent/<int:pk>/', AgentsData)
 ]

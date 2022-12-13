@@ -1,9 +1,12 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import *
-User=get_user_model()
+
+User = get_user_model()
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -67,7 +70,6 @@ class UserViewSet(viewsets.ModelViewSet):
         instance.save()
 
 
-
 class ResetPasswordview(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = ResetPasswordSerializer
@@ -122,7 +124,7 @@ class UserRegistration(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save()
             user = User.objects.get(username=user_data['username'])
-            user.password=make_password(request.data['password'])
+            user.password = make_password(request.data['password'])
             user.save()
             profile_data = {
                 'user': str(user.id),
@@ -143,5 +145,14 @@ class UserRegistration(viewsets.ModelViewSet):
                     status=status.HTTP_201_CREATED)
             return Response(profileSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def listAgents(request):
+    if request.method == "GET":
+        agents = Agent.objects.all()
+        serializer = AgentProfileSerializer(agents, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 

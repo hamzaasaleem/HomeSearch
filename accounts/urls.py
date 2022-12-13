@@ -11,4 +11,6 @@ router.register(r'reset-password', ResetPasswordview)
 urlpatterns = [
     path('accounts/', include(router.urls)),
 
+    path('accounts/agents/', listAgents),
+
 ]
