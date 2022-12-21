@@ -445,3 +445,42 @@ class PropertyHomeRentList(ListAPIView):
     serializer_class = HomeRentSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['monthly_rent', 'advance_rent', 'city', 'address', 'area', 'bedrooms', 'bathrooms']
+
+
+
+class PropertyPlotRentFilter(filters.FilterSet):
+    # min_price = filters.NumberFilter(field_name="price", lookup_expr='gte')
+    # max_price = filters.NumberFilter(field_name="price", lookup_expr='lte')
+    advance_rent = filters.NumberFilter(field_name="advance_rent", lookup_expr='lte')
+    monthly_rent = filters.NumberFilter(field_name="monthly_rent", lookup_expr='lte')
+
+    class Meta:
+        model = PlotRentModel
+        fields = ['monthly_rent', 'advance_rent', 'city', 'address', 'area']
+
+
+class PropertyPlotRentList(ListAPIView):
+    queryset = PlotRentModel.objects.all()
+    serializer_class = PlotRentSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields =  ['monthly_rent', 'advance_rent', 'city', 'address', 'area']
+
+
+
+
+class PropertyCommercialRentFilter(filters.FilterSet):
+    # min_price = filters.NumberFilter(field_name="price", lookup_expr='gte')
+    # max_price = filters.NumberFilter(field_name="price", lookup_expr='lte')
+    advance_rent = filters.NumberFilter(field_name="advance_rent", lookup_expr='lte')
+    monthly_rent = filters.NumberFilter(field_name="monthly_rent", lookup_expr='lte')
+
+    class Meta:
+        model = CommercialRentModel
+        fields = ['monthly_rent', 'advance_rent', 'city', 'address', 'area']
+
+
+class PropertyCommercialRentList(ListAPIView):
+    queryset = PlotRentModel.objects.all()
+    serializer_class = PlotRentSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields =  ['monthly_rent', 'advance_rent', 'city', 'address', 'area']
