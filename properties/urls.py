@@ -15,9 +15,11 @@ router.register(r'sale-commercial', CommercialSaleViewset)
 router.register(r'get-auth-properties', listAuthPropertiesViewset)
 
 router.register(r'get-all-properties', listAllPropertiesViewset)
+
 # router.register(r'sale', SaleViewset)
 
 urlpatterns = [
     path('properties/', include(router.urls)),
-    path('properties/agent/<int:pk>/', AgentsData)
+    path('properties/agent/<int:pk>/', AgentsData),
+    path('properties/home-rent/', PropertyHomeRentList.as_view())
 ]

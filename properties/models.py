@@ -63,14 +63,14 @@ class BaseModel(models.Model):
 
 
 class RentModel(BaseModel):
-    monthly_rent = models.CharField(max_length=100, default='', null=True, blank=True)
-    advance_rent = models.CharField(max_length=100, default='', null=True, blank=True)
+    monthly_rent = models.IntegerField(default=0, null=True, blank=True)
+    advance_rent = models.IntegerField(default=0, null=True, blank=True)
     purpose = models.CharField(max_length=100, null=True, blank=True, default='rent')
 
 
 class HomeRentModel(RentModel):
-    bedrooms = models.CharField(max_length=100, default='', null=True, blank=True)
-    bathrooms = models.CharField(max_length=100, default='', null=True, blank=True)
+    bedrooms = models.IntegerField(default=0, null=True, blank=True)
+    bathrooms = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
         return f'{self.agent}'

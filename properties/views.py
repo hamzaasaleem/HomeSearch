@@ -1,10 +1,12 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import rest_framework as filters
 from accounts.serializers import AgentProfileSerializer
 from .models import *
 from .serializers import *
+from rest_framework.generics import ListAPIView
 
 
 class HomeRentViewset(viewsets.ModelViewSet):
@@ -427,8 +429,19 @@ def AgentsData(request, pk=None):
             return Response({"msg": "Nothing is Listed"}, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
-def SearchHomeRentProperties(self, request):
-    if request.method == 'GET':
-        return Response({"message": "Got some data!", "data": request.data})
-    return Response({"message": "Hello, world!"})
+class PropertyHomeRentFilter(filters.FilterSet):
+    # min_price = filters.NumberFilter(field_name="price", lookup_expr='gte')
+    # max_price = filters.NumberFilter(field_name="price", lookup_expr='lte')
+    advance_rent = filters.NumberFilter(field_name="advance_rent", lookup_expr='lte')
+    monthly_rent = filters.NumberFilter(field_name="monthly_rent", lookup_expr='lte')
+
+    class Meta:
+        model = HomeRentModel
+        fields = ['monthly_rent', 'advance_rent', 'city', 'address', 'area', 'bedrooms', 'bathrooms']
+
+
+class PropertyHomeRentList(ListAPIView):
+    queryset = HomeRentModel.objects.all()
+    serializer_class = HomeRentSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['monthly_rent', 'advance_rent', 'city', 'address', 'area', 'bedrooms', 'bathrooms']
