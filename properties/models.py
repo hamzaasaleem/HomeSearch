@@ -90,21 +90,22 @@ class CommercialRentModel(RentModel):
 
 class SaleModel(BaseModel):
     installment = models.CharField(max_length=100, default='1.5', null=True, blank=True)
-    price = models.CharField(max_length=100, default='0', null=True, blank=True)
+    price = models.IntegerField(default=0, null=True, blank=True)
     purpose = models.CharField(max_length=100, null=True, blank=True, default='sale')
 
 
-
 class HomeSaleModel(SaleModel):
-    bedrooms = models.CharField(max_length=100, default='', null=True, blank=True)
-    bathrooms = models.CharField(max_length=100, default='', null=True, blank=True)
+    bedrooms = models.IntegerField(default=0, null=True, blank=True)
+    bathrooms = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
         return f'{self.agent}'
+
 
 class PlotSaleModel(SaleModel):
     def __str__(self):
         return f'{self.agent}'
+
 
 class CommercialSaleModel(SaleModel):
     def __str__(self):

@@ -484,3 +484,54 @@ class PropertyCommercialRentList(ListAPIView):
     serializer_class = PlotRentSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields =  ['monthly_rent', 'advance_rent', 'city', 'address', 'area']
+
+
+
+class PropertyHomeSaleFilter(filters.FilterSet):
+    min_price = filters.NumberFilter(field_name="price", lookup_expr='gte')
+    max_price = filters.NumberFilter(field_name="price", lookup_expr='lte')
+
+    class Meta:
+        model = HomeSaleModel
+        fields = ['price', 'installment', 'city', 'address', 'area', 'bedrooms', 'bathrooms']
+
+
+class PropertyHomeSaleList(ListAPIView):
+    queryset = HomeSaleModel.objects.all()
+    serializer_class = HomeSaleSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['price', 'installment', 'city', 'address', 'area', 'bedrooms', 'bathrooms']
+
+
+class PropertyPlotSaleFilter(filters.FilterSet):
+    min_price = filters.NumberFilter(field_name="price", lookup_expr='gte')
+    max_price = filters.NumberFilter(field_name="price", lookup_expr='lte')
+
+    class Meta:
+        model = PlotSaleModel
+        fields = ['price', 'installment', 'city', 'address', 'area']
+
+
+class PropertyPlotSaleList(ListAPIView):
+    queryset = PlotSaleModel.objects.all()
+    serializer_class = PlotSaleSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['price', 'installment', 'city', 'address', 'area']
+
+
+
+
+class PropertyCommercialSaleFilter(filters.FilterSet):
+    min_price = filters.NumberFilter(field_name="price", lookup_expr='gte')
+    max_price = filters.NumberFilter(field_name="price", lookup_expr='lte')
+
+    class Meta:
+        model = CommercialSaleModel
+        fields = ['price', 'installment', 'city', 'address', 'area']
+
+
+class PropertyCommercialSaleList(ListAPIView):
+    queryset = CommercialSaleModel.objects.all()
+    serializer_class = CommercialSaleSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['price', 'installment', 'city', 'address', 'area']

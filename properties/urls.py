@@ -21,7 +21,12 @@ router.register(r'get-all-properties', listAllPropertiesViewset)
 urlpatterns = [
     path('properties/', include(router.urls)),
     path('properties/agent/<int:pk>/', AgentsData),
+    #Rent
     path('properties/home-rent/', PropertyHomeRentList.as_view()),
     path('properties/plot-rent/', PropertyPlotRentList.as_view()),
     path('properties/commercial-rent/', PropertyCommercialRentList.as_view()),
+    #Sale
+    path('properties/home-sale/', PropertyHomeSaleList.as_view()),
+    path('properties/plot-sale/', PropertyPlotSaleList.as_view()),
+    path('properties/commercial-sale/', PropertyCommercialSaleList.as_view()),
 ]
