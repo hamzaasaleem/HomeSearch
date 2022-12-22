@@ -356,19 +356,19 @@ class listAllPropertiesViewset(viewsets.ModelViewSet):
 def AgentsData(request, pk=None):
     if request.method == "GET":
         try:
-            rentedHomes = HomeRentModel.objects.get(agent=pk)
+            rentedHomes = HomeRentModel.objects.filter(agent=pk)
             rentedHomeserializer = HomeRentSerializer(rentedHomes, many=True)
         except:
             rentedHomeserializer = None
 
         try:
-            rentedPlots = PlotRentModel.objects.get(agent=pk)
+            rentedPlots = PlotRentModel.objects.filter(agent=pk)
             rentedPlotserializer = HomeRentSerializer(rentedPlots, many=True)
         except:
             rentedPlotserializer = None
 
         try:
-            rentedCommerical = CommercialRentModel.get(agent=pk)
+            rentedCommerical = CommercialRentModel.filter(agent=pk)
             rentedCommercialserializer = HomeRentSerializer(rentedCommerical, many=True)
         except:
             rentedCommercialserializer = None
@@ -382,19 +382,19 @@ def AgentsData(request, pk=None):
             rented.append(rentedCommercialserializer.data)
 
         try:
-            saleHomes = HomeSaleModel.objects.all()
+            saleHomes = HomeSaleModel.objects.filter(agent=pk)
             saleHomeserializer = HomeSaleSerializer(saleHomes, many=True)
         except:
             saleHomeserializer = None
 
         try:
-            salePlots = PlotSaleModel.objects.all()
+            salePlots = PlotSaleModel.objects.filter(agent=pk)
             salePlotserializer = HomeSaleSerializer(salePlots, many=True)
         except:
             salePlotserializer = None
 
         try:
-            saleCommerical = CommercialSaleModel.objects.all()
+            saleCommerical = CommercialSaleModel.objects.filter(agent=pk)
             saleCommericalserializer = HomeSaleSerializer(saleCommerical, many=True)
         except:
             saleCommericalserializer = None

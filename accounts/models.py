@@ -24,7 +24,7 @@ class User(AbstractUser):
 
 class BaseProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    user_image = models.ImageField(upload_to='user_image/', null=True, blank=True, default='/media/user_image/placeholder.jpeg')
+    user_image = models.ImageField(upload_to='user_image/', null=True, blank=True, default='/user_image/placeholder.jpeg')
     name = models.CharField(max_length=50, null=True, blank=True)
     phone = models.CharField(max_length=50, null=True, blank=True)
     city = models.CharField(max_length=100,null=True, blank=True)

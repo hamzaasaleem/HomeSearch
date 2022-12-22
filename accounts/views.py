@@ -151,6 +151,8 @@ class UserRegistration(viewsets.ModelViewSet):
 def listAgents(request):
     if request.method == "GET":
         agents = Agent.objects.all()
+        user=User.objects.filter(role='agent')
+
         serializer = AgentProfileSerializer(agents, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
